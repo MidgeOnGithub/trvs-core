@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>TRVS.Core</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Authors>Midge</Authors>
+    <Company />
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2020 Cody M Mason</Copyright>
+    <RepositoryUrl>https://github.com/TombRunners/trvs-core</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<Title>TRVS Core</Title>
+    <AssemblyName>TRVS.Core</AssemblyName>
+    <ApplicationIcon></ApplicationIcon>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <Description>Shared functionality for classic TR version swappers.</Description>
+    <PackageIcon>TRVS.png</PackageIcon>
+    <PackageReleaseNotes>Initial release.</PackageReleaseNotes>
+    <SignAssembly>false</SignAssembly>
+    <NeutralLanguage>en</NeutralLanguage>
+    <PackageId>TRVS.Core</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+    <OutputPath></OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.8.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.5" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.6.4" />
+    <PackageReference Include="Octokit" Version="0.48.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="TRVS.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
