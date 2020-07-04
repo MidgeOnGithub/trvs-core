@@ -10,7 +10,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Class used by <see cref="Parser"/>.

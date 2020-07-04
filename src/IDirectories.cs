@@ -1,4 +1,4 @@
-﻿namespace TRVSCore
+﻿namespace TRVS.Core
 {
     /// <summary>
     ///     Directories used by <see cref="InstallationManagerBase{TD,TF}"/> and <see cref="VersionSwapperBase{TD}"/>

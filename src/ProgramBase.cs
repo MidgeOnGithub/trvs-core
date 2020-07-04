@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Serves as the base for Version Swapper program entries.  

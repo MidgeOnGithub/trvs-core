@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 using Octokit;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Provides interaction with Github's REST API.

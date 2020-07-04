@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Provides functionality for interacting with a console.

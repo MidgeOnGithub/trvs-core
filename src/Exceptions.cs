@@ -1,7 +1,7 @@
 ﻿// ReSharper disable UnusedMember.Global
 using System;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     When the installed program is not in a TR game installation.

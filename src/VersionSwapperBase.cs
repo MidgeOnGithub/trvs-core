@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     TR version swapping functionality.

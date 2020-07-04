@@ -5,7 +5,7 @@ using System.Net.Http;
 
 using Octokit;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Validates install location and packaged files.

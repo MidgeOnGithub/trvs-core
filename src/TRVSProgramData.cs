@@ -1,7 +1,7 @@
 ﻿using System;
 using NLog;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     public struct TRVSProgramData
     {

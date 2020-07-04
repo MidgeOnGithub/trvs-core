@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Provides utility filesystem functionality.

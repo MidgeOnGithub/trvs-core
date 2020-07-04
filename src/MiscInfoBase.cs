@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Contains misc info for console output and settings file creation.

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Contains information about packaged files' names and MD5 hashes.

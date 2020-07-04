@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TRVSCore
+namespace TRVS.Core
 {
     /// <summary>
     ///     Provides extended functionality to <see cref="Version"/>.
