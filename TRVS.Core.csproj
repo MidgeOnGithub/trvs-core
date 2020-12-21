@@ -8,7 +8,7 @@
     <Company />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) 2020 Cody M Mason</Copyright>
-	<Version>1.0.0.2</Version>
+	<Version>1.0.0.3</Version>
     <RepositoryUrl>https://github.com/TombRunners/trvs-core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -19,7 +19,7 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <Description>Shared functionality for classic TR version swappers.</Description>
     <PackageIcon>TRVS.png</PackageIcon>
-    <PackageReleaseNotes>Bumped dependencies.</PackageReleaseNotes>
+    <PackageReleaseNotes>Bumped dependencies, miscellaneous cleanups.</PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageId>TRVS.Core</PackageId>

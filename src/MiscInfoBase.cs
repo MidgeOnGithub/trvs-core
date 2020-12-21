@@ -32,7 +32,7 @@ namespace TRVS.Core
             @"  // Set to 0 to allow infinite log file generation.",
             @"  // Default: 15",
             @"  ""LogFileLimit"": 15",
-            @"}",
+            @"}"
         };
     }
 }

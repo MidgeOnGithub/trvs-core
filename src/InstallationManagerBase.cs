@@ -27,12 +27,12 @@ namespace TRVS.Core
         public void VersionCheck()
         {
             ProgramData.NLogger.Debug("Running Github Version checks...");
-            var repoInfo = new Github.RepoInformation()
+            var repoInfo = new Github.RepoInformation
             {
                 Owner = "TombRunners",
                 Name = $"{ProgramData.GameAbbreviation.ToLower()}-version-swapper"
             };
-            var agentInfo = new Github.UserAgentInformation()
+            var agentInfo = new Github.UserAgentInformation
             {
                 Name = "TRVS",
                 Version = ProgramData.Version.ToString()

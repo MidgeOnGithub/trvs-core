@@ -250,7 +250,7 @@ namespace TRVS.Core
         /// <param name="fileName">User settings file name</param>
         private static TRVSUserSettings GetUserSettingsFromFile(string fileName)
         {
-            var jsonOptions = new JsonSerializerOptions()
+            var jsonOptions = new JsonSerializerOptions
             {
                 ReadCommentHandling = JsonCommentHandling.Skip
             };

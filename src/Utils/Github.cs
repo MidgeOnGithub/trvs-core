@@ -30,7 +30,7 @@ namespace TRVS.Core
         /// </returns>
         public static async Task<Version> GetLatestVersion(RepoInformation repoInfo, UserAgentInformation agentInfo)
         {
-            var github = new GitHubClient(new Octokit.ProductHeaderValue(agentInfo.Name, agentInfo.Version));
+            var github = new GitHubClient(new ProductHeaderValue(agentInfo.Name, agentInfo.Version));
             Release latest = await github.Repository.Release.GetLatest(repoInfo.Owner, repoInfo.Name);
             return latest.TagName[0] == 'v'
                 ? new Version(latest.TagName.Substring(1))
