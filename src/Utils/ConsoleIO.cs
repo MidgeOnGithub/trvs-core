@@ -8,15 +8,32 @@ namespace TRVS.Core
     public static class ConsoleIO
     {
         /// <summary>
+        ///     An enum allowing for a default of true/false, or no default at all. Useful for yes/no or true/false prompts.
+        /// </summary>
+        public enum DefaultOption
+        {
+            None,
+            Yes,
+            No
+        }
+
+        /// <summary>
         ///     Gives a yes/no prompt and evaluates user response.
         /// </summary>
         /// <returns>
         ///     <see langword="true"/> if <c>yes</c>/<c>y</c>, <see langword="false"/> if <c>no</c>/<c>n</c>
         /// </returns>
-        public static bool UserPromptYesNo(string promptText = "")
+        public static bool UserPromptYesNo(string promptText = "", DefaultOption option = DefaultOption.None)
         {
             if (string.IsNullOrEmpty(promptText))
-                promptText = "Yes or no? [y/n]: ";
+            {
+                promptText = "Yes or no? " + option switch
+                {
+                    DefaultOption.Yes => "[Y/n]",
+                    DefaultOption.No => "[y/N]",
+                    _ => "[y/n]"
+                } + ": ";
+            }
 
             bool value = false;
             bool validInput = false;
@@ -25,15 +42,16 @@ namespace TRVS.Core
                 Console.Write(promptText);
                 string inputString = Console.ReadLine();
                 Console.WriteLine();
-                if (!string.IsNullOrEmpty(inputString))
+                bool emptyOrNull = string.IsNullOrEmpty(inputString);
+                if (!emptyOrNull || option != DefaultOption.None)
                 {
-                    inputString = inputString.ToLower();
-                    if (inputString == "yes" || inputString == "y")
+                    inputString = inputString?.Trim().ToLower();
+                    if (inputString == "yes" || inputString == "y" || (emptyOrNull && option == DefaultOption.Yes))
                     {
                         value = true;
                         validInput = true;
                     }
-                    else if (inputString == "no" || inputString == "n")
+                    else if (inputString == "no" || inputString == "n" || (emptyOrNull && option == DefaultOption.No))
                     {
                         validInput = true;
                     }

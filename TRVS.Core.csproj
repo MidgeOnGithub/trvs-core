@@ -7,8 +7,8 @@
     <Authors>Midge</Authors>
     <Company />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright (c) 2020 Cody M Mason</Copyright>
-	<Version>1.0.0.3</Version>
+    <Copyright>Copyright (c) 2020-2022 Cody M Mason</Copyright>
+	<Version>1.0.1.0</Version>
     <RepositoryUrl>https://github.com/TombRunners/trvs-core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -19,7 +19,7 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <Description>Shared functionality for classic TR version swappers.</Description>
     <PackageIcon>TRVS.png</PackageIcon>
-    <PackageReleaseNotes>Bumped dependencies, miscellaneous cleanups.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added DefaultOptions to ConsoleIO and bumped dependencies.</PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageId>TRVS.Core</PackageId>
@@ -37,9 +37,9 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.8.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="NLog.Extensions.Logging" Version="1.6.5" />
-    <PackageReference Include="Octokit" Version="0.48.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.4" />
+    <PackageReference Include="Octokit" Version="0.50.0" />
   </ItemGroup>
 
   <ItemGroup>
