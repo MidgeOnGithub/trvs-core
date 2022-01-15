@@ -22,7 +22,10 @@ namespace TRVS.Core
         /// </remarks>
         public static void CopyDirectory(string sourceDir, string destDir, bool recursive)
         {
-            // Get the directory's files and subdirectories.
+            // Ensure destination directory exists.
+            _ = Directory.CreateDirectory(destDir);
+            
+            // Get the source directory's files and subdirectories.
             var dir = new DirectoryInfo(sourceDir);
             DirectoryInfo[] subDirs = dir.GetDirectories();
             FileInfo[] files = dir.GetFiles();
@@ -74,6 +77,30 @@ namespace TRVS.Core
             }
 
             return null;
+        }
+
+        /// <summary>
+        ///     Deletes <paramref name="dirs"/>.
+        /// </summary>
+        /// <param name="dirs">paths of directories to delete</param>
+        public static void DeleteDirectories(IEnumerable<string> dirs, bool recursive = false)
+        {
+            foreach (string dir in dirs)
+	        {
+                Directory.Delete(dir, recursive);
+	        }
+        }
+
+        /// <summary>
+        ///     Deletes <paramref name="files"/>.
+        /// </summary>
+        /// <param name="files">paths of files to delete</param>
+        public static void DeleteFiles(IEnumerable<string> files)
+        {
+            foreach (string file in files)
+            {
+                File.Delete(file);
+            }
         }
 
         /// <summary>
