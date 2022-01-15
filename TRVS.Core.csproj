@@ -8,7 +8,7 @@
     <Company />
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) 2020-2022 Cody M Mason</Copyright>
-	<Version>1.0.1.0</Version>
+	<Version>1.1.0.0</Version>
     <RepositoryUrl>https://github.com/TombRunners/trvs-core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -19,7 +19,7 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <Description>Shared functionality for classic TR version swappers.</Description>
     <PackageIcon>TRVS.png</PackageIcon>
-    <PackageReleaseNotes>Added DefaultOptions to ConsoleIO and bumped dependencies.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added methods to FileIO and VersionSwapperBase, improved VersionCheck.</PackageReleaseNotes>
     <SignAssembly>false</SignAssembly>
     <NeutralLanguage>en</NeutralLanguage>
     <PackageId>TRVS.Core</PackageId>
@@ -28,6 +28,7 @@
   <PropertyGroup>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -46,6 +47,13 @@
     <None Include="TRVS.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
