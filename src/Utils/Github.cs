@@ -23,15 +23,31 @@ namespace TRVS.Core
         }
 
         /// <summary>
-        ///     Get the latest <see cref="Release"/> version from Github using <see cref="Octokit"/>.
+        ///     Get the latest <see cref="Release"/> version (based on <see cref="Release.TagName"/>) from Github.
         /// </summary>
         /// <returns>
-        ///     The latest Github release's version (based on <see cref="Release.TagName"/>).
+        ///     The latest release's <see cref="Version"/>, if one is found; otherwise, <see langword="null"></see>.
         /// </returns>
+        /// <exception cref="ApiException"></exception>
         public static async Task<Version> GetLatestVersion(RepoInformation repoInfo, UserAgentInformation agentInfo)
         {
             var github = new GitHubClient(new ProductHeaderValue(agentInfo.Name, agentInfo.Version));
-            Release latest = await github.Repository.Release.GetLatest(repoInfo.Owner, repoInfo.Name);
+            Release latest;
+            try
+            {
+                latest = await github.Repository.Release.GetLatest(repoInfo.Owner, repoInfo.Name);
+            }
+            catch (ApiException e)
+            {
+                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null;
+                }
+                else 
+                {
+                    throw e;
+                }
+            }            
             return latest.TagName[0] == 'v'
                 ? new Version(latest.TagName.Substring(1))
                 : new Version(latest.TagName);

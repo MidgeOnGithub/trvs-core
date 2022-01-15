@@ -41,23 +41,33 @@ namespace TRVS.Core
             try
             {
                 Version latest = Github.GetLatestVersion(repoInfo, agentInfo).GetAwaiter().GetResult();
-                int result = ProgramData.Version.CompareTo(latest, 3);
-
-                if (result == -1)
+                if (latest is null)
                 {
-                    ProgramData.NLogger.Debug($"Latest Github release ({latest}) is newer than the running version ({result}).");
-                    ConsoleIO.PrintHeader("A new release is available!", ProgramData.MiscInfo.LatestReleaseLink, ConsoleColor.Yellow);
-                    Console.WriteLine("You are strongly advised to update to ensure leaderboard compatibility.");
+                    ProgramData.NLogger.Debug($"No releases found.");
+                    Console.WriteLine("I didn't find any latest release information.");
+                    Console.WriteLine("Perhaps no releases exist or the URL was bad.");
+                    Console.WriteLine("If release information was expected, please bring up the issue!");
+                    Console.WriteLine("Otherwise... Let me know how testing goes! :D");                
                 }
-                else if (result == 0)
+                else
                 {
-                    ProgramData.NLogger.Debug($"Version is up-to-date ({latest}).");
-                }
-                else // result == 1
-                {
-                    ProgramData.NLogger.Debug($"Running version ({ProgramData.Version}) has not yet been released on Github ({latest}).");
-                    Console.WriteLine("You seem to be running a pre-release version.");
-                    Console.WriteLine("Let me know how testing goes! :D");
+                    int result = ProgramData.Version.CompareTo(latest, 3);
+                    if (result == -1)
+                    {
+                        ProgramData.NLogger.Debug($"Latest Github release ({latest}) is newer than the running version ({result}).");
+                        ConsoleIO.PrintHeader("A new release is available!", ProgramData.MiscInfo.LatestReleaseLink, ConsoleColor.Yellow);
+                        Console.WriteLine("You are strongly advised to update to ensure leaderboard compatibility.");
+                    }
+                    else if (result == 0)
+                    {
+                        ProgramData.NLogger.Debug($"Version is up-to-date ({latest}).");
+                    }
+                    else // result == 1
+                    {
+                        ProgramData.NLogger.Debug($"Running version ({ProgramData.Version}) has not yet been released on Github ({latest}).");
+                        Console.WriteLine("You seem to be running a pre-release version.");
+                        Console.WriteLine("Let me know how testing goes! :D");
+                    }
                 }
             }
             catch (Exception e)
