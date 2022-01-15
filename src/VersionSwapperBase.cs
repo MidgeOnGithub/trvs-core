@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace TRVS.Core
         public abstract void SwapVersions();
 
         /// <summary>
-        ///     Try to prevent but closing program if errors occur while copying.
+        ///     Try to prevent, but close program if errors occur while copying.
         /// </summary>
         /// <param name="srcDir">The directory to copy from</param>
         /// <param name="destDir">The directory to copy to</param>
@@ -41,6 +42,55 @@ namespace TRVS.Core
             {
                 ProgramManager.GiveErrorMessageAndExit("Failed to copy files!", e, 3);
             }
+        }
+
+        /// <summary>
+        ///     Try to prevent, but if errors occur while deleting <paramref name="files"/>, respond according to <paramref name="critical"/>.
+        /// </summary>
+        /// <param name="files">Files to delete</param>
+        /// <param name="critical">Whether the program should halt upon exception</param>
+        protected bool TryDeletingFiles(IEnumerable<string> files, bool critical = false)
+        {
+            EnsureNoTrGameRunningFromGameDir(Directories.Game);
+            try
+            {
+                ProgramData.NLogger.Debug($"Attempting to delete the following files: {string.Join(", ", files)}");
+                FileIO.DeleteFiles(files);
+            }
+            catch (Exception e)
+            { 
+                if (critical)
+                    ProgramManager.GiveErrorMessageAndExit("Failed to delete files!", e, 3);
+                else
+                    ProgramData.NLogger.Error($"Failed to delete files! {e.Message}\n{e.StackTrace}");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        ///     Try to prevent, but if errors occur while deleting <paramref name="dirs"/>, respond according to <paramref name="critical"/>.
+        /// </summary>
+        /// <param name="dirs">Directories to delete</param>
+        /// <param name="recursive">Whether to recursively delete files and subdirectories inside of <paramref name="dirs"/></param>
+        /// <param name="critical">Whether the program should halt upon exception</param>
+        protected bool TryDeletingDirectories(IEnumerable<string> dirs, bool recursive = false, bool critical = false)
+        {
+            EnsureNoTrGameRunningFromGameDir(Directories.Game);
+            try
+            {
+                ProgramData.NLogger.Debug($"Attempting to delete the following directories: {string.Join(", ", dirs)}");
+                FileIO.DeleteDirectories(dirs, recursive);
+            }
+            catch (Exception e)
+            {
+                if (critical)
+                    ProgramManager.GiveErrorMessageAndExit("Failed to delete files!", e, 3);
+                else
+                    ProgramData.NLogger.Error($"Failed to delete directories! {e.Message}\n{e.StackTrace}");
+                return false;
+            }
+            return true;
         }
 
         /// <summary>
