@@ -87,7 +87,14 @@ namespace TRVS.Core
         {
             foreach (string dir in dirs)
 	        {
-                Directory.Delete(dir, recursive);
+                try
+                {
+                    Directory.Delete(dir, recursive);
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    continue;
+                }
 	        }
         }
 

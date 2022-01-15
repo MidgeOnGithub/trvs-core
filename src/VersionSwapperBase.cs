@@ -85,7 +85,7 @@ namespace TRVS.Core
             catch (Exception e)
             {
                 if (critical)
-                    ProgramManager.GiveErrorMessageAndExit("Failed to delete files!", e, 3);
+                    ProgramManager.GiveErrorMessageAndExit("Failed to delete directories!", e, 3);
                 else
                     ProgramData.NLogger.Error($"Failed to delete directories! {e.Message}\n{e.StackTrace}");
                 return false;
