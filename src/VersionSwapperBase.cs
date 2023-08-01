@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -11,6 +12,7 @@ namespace TRVS.Core
     ///     TR version swapping functionality.
     /// </summary>
     /// <typeparam name="TD"><see cref="IDirectories"/> implementation</typeparam>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public abstract class VersionSwapperBase<TD>
         where TD : IDirectories
     {
@@ -49,6 +51,7 @@ namespace TRVS.Core
         /// </summary>
         /// <param name="files">Files to delete</param>
         /// <param name="critical">Whether the program should halt upon exception</param>
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         protected bool TryDeletingFiles(IEnumerable<string> files, bool critical = false)
         {
             EnsureNoTrGameRunningFromGameDir(Directories.Game);
@@ -74,6 +77,7 @@ namespace TRVS.Core
         /// <param name="dirs">Directories to delete</param>
         /// <param name="recursive">Whether to recursively delete files and subdirectories inside of <paramref name="dirs"/></param>
         /// <param name="critical">Whether the program should halt upon exception</param>
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         protected bool TryDeletingDirectories(IEnumerable<string> dirs, bool recursive = false, bool critical = false)
         {
             EnsureNoTrGameRunningFromGameDir(Directories.Game);
@@ -100,7 +104,7 @@ namespace TRVS.Core
         {
             try
             {
-                Process trProcess = FindTrGameRunningFromGameDir(gameDirectory);
+                var trProcess = FindTrGameRunningFromGameDir(gameDirectory);
                 if (trProcess == null)
                 {
                     ProgramData.NLogger.Debug($"No {ProgramData.GameAbbreviation} process of concern found; looks safe to copy files.");
@@ -128,13 +132,13 @@ namespace TRVS.Core
         /// <returns>
         ///     The running <see cref="Process"/> or <see langword="null"/> if none was found.
         /// </returns>
-        private Process FindTrGameRunningFromGameDir(string gameDirectory)
+        private Process? FindTrGameRunningFromGameDir(string gameDirectory)
         {
             ProgramData.NLogger.Debug($"Checking for a {ProgramData.GameAbbreviation} process running in the target folder...");
             Process[] processes = Process.GetProcesses();
             return processes.FirstOrDefault(p =>
-                p.ProcessName.ToLower() == ProgramData.GameExe &&
-                Directory.GetParent(p.MainModule?.FileName).FullName == gameDirectory
+                p.ProcessName.ToLower() == ProgramData.GameExe && p.MainModule?.FileName != null &&
+                Directory.GetParent(p.MainModule?.FileName!)?.FullName == gameDirectory
             );
         }
 
@@ -144,7 +148,7 @@ namespace TRVS.Core
         /// <param name="p"><see cref="Process"/> of concern</param>
         private void KillRunningTrGame(Process p)
         {
-            string processInfo = $"Name: {p.ProcessName} | ID: {p.Id} | Start time: {p.StartTime.TimeOfDay}";
+            var processInfo = $"Name: {p.ProcessName} | ID: {p.Id} | Start time: {p.StartTime.TimeOfDay}";
             ProgramData.NLogger.Debug($"Found a {ProgramData.GameAbbreviation} process running from target folder. {processInfo}");
             ConsoleIO.PrintWithColor($"{ProgramData.GameAbbreviation} is running from the target folder.", ConsoleColor.Yellow);
             ConsoleIO.PrintWithColor(processInfo, ConsoleColor.Yellow);

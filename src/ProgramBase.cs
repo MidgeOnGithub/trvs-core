@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TRVS.Core
 {
@@ -10,6 +11,7 @@ namespace TRVS.Core
     /// <typeparam name="TF"><see cref="IFileAudit"/> implementation</typeparam>
     /// <typeparam name="TI"><see cref="InstallationManagerBase{TD,TF}"/> implementation</typeparam>
     /// <typeparam name="TV"><see cref="VersionSwapperBase{TD}"/> implementation</typeparam>
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public abstract class ProgramBase<TD, TF, TI, TV>
         where TD : IDirectories
         where TF : IFileAudit

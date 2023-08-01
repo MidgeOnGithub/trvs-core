@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net.Http;
-
 using Octokit;
 
 namespace TRVS.Core
@@ -40,10 +40,10 @@ namespace TRVS.Core
 
             try
             {
-                Version latest = Github.GetLatestVersion(repoInfo, agentInfo).GetAwaiter().GetResult();
+                var latest = Github.GetLatestVersion(repoInfo, agentInfo).GetAwaiter().GetResult();
                 if (latest is null)
                 {
-                    ProgramData.NLogger.Debug($"No releases found.");
+                    ProgramData.NLogger.Debug("No releases found.");
                     Console.WriteLine("I didn't find any latest release information.");
                     Console.WriteLine("Perhaps no releases exist or the URL was bad.");
                     Console.WriteLine("If release information was expected, please bring up the issue!");
@@ -52,30 +52,29 @@ namespace TRVS.Core
                 else
                 {
                     int result = ProgramData.Version.CompareTo(latest, 3);
-                    if (result == -1)
+                    switch (result)
                     {
-                        ProgramData.NLogger.Debug($"Latest Github release ({latest}) is newer than the running version ({result}).");
-                        ConsoleIO.PrintHeader("A new release is available!", ProgramData.MiscInfo.LatestReleaseLink, ConsoleColor.Yellow);
-                        Console.WriteLine("You are strongly advised to update to ensure leaderboard compatibility.");
-                    }
-                    else if (result == 0)
-                    {
-                        ProgramData.NLogger.Debug($"Version is up-to-date ({latest}).");
-                    }
-                    else // result == 1
-                    {
-                        ProgramData.NLogger.Debug($"Running version ({ProgramData.Version}) has not yet been released on Github ({latest}).");
-                        Console.WriteLine("You seem to be running a pre-release version.");
-                        Console.WriteLine("Let me know how testing goes! :D");
+                        case -1:
+                            ProgramData.NLogger.Debug($"Latest Github release ({latest}) is newer than the running version ({result}).");
+                            ConsoleIO.PrintHeader("A new release is available!", ProgramData.MiscInfo.LatestReleaseLink, ConsoleColor.Yellow);
+                            Console.WriteLine("You are strongly advised to update to ensure leaderboard compatibility.");
+                            break;
+                        case 0:
+                            ProgramData.NLogger.Debug($"Version is up-to-date ({latest}).");
+                            break;
+                        default: // result == 1
+                            ProgramData.NLogger.Debug($"Running version ({ProgramData.Version}) has not yet been released on Github ({latest}).");
+                            Console.WriteLine("You seem to be running a pre-release version.");
+                            Console.WriteLine("Let me know how testing goes! :D");
+                            break;
                     }
                 }
             }
             catch (Exception e)
             {
-                if (e is ApiException || e is HttpRequestException)
-                    ProgramData.NLogger.Error($"Github request failed due to an API/HTTP failure. {e.Message}\n{e.StackTrace}");
-                else
-                    ProgramData.NLogger.Error($"Version check failed with an unforeseen error. {e.Message}\n{e.StackTrace}");
+                ProgramData.NLogger.Error(e is ApiException or HttpRequestException
+                    ? $"Github request failed due to an API/HTTP failure. {e.Message}\n{e.StackTrace}"
+                    : $"Version check failed with an unforeseen error. {e.Message}\n{e.StackTrace}");
 
                 ConsoleIO.PrintWithColor("Unable to check for the latest version. Consider manually checking:", ConsoleColor.Yellow);
                 Console.WriteLine(ProgramData.MiscInfo.LatestReleaseLink);
@@ -100,9 +99,7 @@ namespace TRVS.Core
             }
             catch (Exception e)
             {
-                if (e is BadInstallationLocationException ||
-                    e is RequiredFileMissingException ||
-                    e is InvalidGameFileException)
+                if (e is BadInstallationLocationException or RequiredFileMissingException or InvalidGameFileException)
                 {
                     ProgramData.NLogger.Fatal($"Installation failed to validate. {e.Message}\n{e.StackTrace}");
                     ConsoleIO.PrintWithColor(e.Message, ConsoleColor.Red);
@@ -127,7 +124,7 @@ namespace TRVS.Core
         /// <exception cref="BadInstallationLocationException">Targeted directory is missing a file or folder</exception>
         private void CheckGameDirLooksLikeATrInstall()
         {
-            string missingFile = FileIO.FindMissingFile(FileAudit.GameFiles, Directories.Game);
+            string? missingFile = FileIO.FindMissingFile(FileAudit.GameFiles, Directories.Game);
             if (!string.IsNullOrEmpty(missingFile))
                 throw new BadInstallationLocationException($"Parent folder is missing game file {missingFile}, cannot be a {ProgramData.GameAbbreviation} installation.");
         }
@@ -139,9 +136,10 @@ namespace TRVS.Core
         /// <param name="dir">Directory to operate within</param>
         /// <exception cref="RequiredFileMissingException">A file was not found</exception>
         /// <exception cref="InvalidGameFileException">A file's MD5 hash did not match expected value</exception>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         protected static void ValidateMd5Hashes(Dictionary<string, string> fileAudit, string dir)
         {
-            foreach (KeyValuePair<string, string> item in fileAudit)
+            foreach (var item in fileAudit)
             {
                 try
                 {

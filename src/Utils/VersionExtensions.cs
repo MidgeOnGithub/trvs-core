@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TRVS.Core
 {
@@ -19,7 +20,8 @@ namespace TRVS.Core
         /// <returns>
         ///    -1 if <see langword="this"/> is less, 0 if equal, 1 if <see langword="this"/> is greater
         /// </returns>
-        public static int CompareTo(this Version version, Version otherVersion, int significantParts)
+        [SuppressMessage("ReSharper", "InvertIf")]
+        public static int CompareTo(this Version version, Version? otherVersion, int significantParts)
         {
             if (version == null)
                 throw new ArgumentNullException(nameof(version));

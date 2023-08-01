@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text.Json;
-
 using CommandLine;
 using CommandLine.Text;
 using NLog;
@@ -120,11 +119,12 @@ namespace TRVS.Core
         /// <returns>
         ///     The appropriate <see cref="ArgumentParseResult"/> value
         /// </returns>
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         private ArgumentParseResult HandleProgramArgs(IEnumerable<string> args)
         {
             var result = ArgumentParseResult.ParsedAndShouldContinue;
             var parser = new Parser(with => with.HelpWriter = null);
-            ParserResult<ProgramArguments> parserResult = parser.ParseArguments<ProgramArguments>(args);
+            var parserResult = parser.ParseArguments<ProgramArguments>(args);
             parserResult
                 .WithParsed(ConfigLogger)
                 .WithNotParsed(errs =>
@@ -146,7 +146,7 @@ namespace TRVS.Core
         /// <param name="args"><see cref="ProgramArguments"/></param>
         private void ConfigLogger(ProgramArguments args)
         {
-            LogLevel consoleLogLevel = args.Verbose ? LogLevel.Info : LogLevel.Off;
+            var consoleLogLevel = args.Verbose ? LogLevel.Info : LogLevel.Off;
             var config = new LoggingConfiguration();
 
             // Configure the targets and rules.
@@ -232,7 +232,7 @@ namespace TRVS.Core
         /// <param name="fileName">User settings file name</param>
         private void CreateDefaultUserSettingsFile(string fileName)
         {
-            using StreamWriter stream = File.CreateText(fileName);
+            using var stream = File.CreateText(fileName);
             foreach (string line in MiscInfoBase.DefaultSettingsFile)
                 stream.WriteLine(line);
 

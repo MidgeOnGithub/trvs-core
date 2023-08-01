@@ -35,26 +35,27 @@ namespace TRVS.Core
                 } + ": ";
             }
 
-            bool value = false;
-            bool validInput = false;
+            var value = false;
+            var validInput = false;
             while (!validInput)
             {
                 Console.Write(promptText);
-                string inputString = Console.ReadLine();
+                string? inputString = Console.ReadLine();
                 Console.WriteLine();
+                
                 bool emptyOrNull = string.IsNullOrEmpty(inputString);
-                if (!emptyOrNull || option != DefaultOption.None)
+                if (emptyOrNull && option == DefaultOption.None)
+                    continue;
+
+                inputString = inputString?.Trim().ToLower();
+                if (inputString == "yes" || inputString == "y" || (emptyOrNull && option == DefaultOption.Yes))
                 {
-                    inputString = inputString?.Trim().ToLower();
-                    if (inputString == "yes" || inputString == "y" || (emptyOrNull && option == DefaultOption.Yes))
-                    {
-                        value = true;
-                        validInput = true;
-                    }
-                    else if (inputString == "no" || inputString == "n" || (emptyOrNull && option == DefaultOption.No))
-                    {
-                        validInput = true;
-                    }
+                    value = true;
+                    validInput = true;
+                }
+                else if (inputString == "no" || inputString == "n" || (emptyOrNull && option == DefaultOption.No))
+                {
+                    validInput = true;
                 }
             }
 
@@ -75,7 +76,7 @@ namespace TRVS.Core
         {
             string titleContent = HeaderHelper(title, "║");
             string subtitleContent = HeaderHelper(subtitle, "║");
-            string borderLine = new string('═', printWidth - 2);
+            var borderLine = new string('═', printWidth - 2);
             
             Console.ForegroundColor = foregroundColor;
 

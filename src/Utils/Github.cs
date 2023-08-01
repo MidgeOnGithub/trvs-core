@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
-
 using Octokit;
 
 namespace TRVS.Core
@@ -29,9 +29,10 @@ namespace TRVS.Core
         ///     The latest release's <see cref="Version"/>, if one is found; otherwise, <see langword="null"></see>.
         /// </returns>
         /// <exception cref="ApiException"></exception>
-        public static async Task<Version> GetLatestVersion(RepoInformation repoInfo, UserAgentInformation agentInfo)
+        public static async Task<Version?> GetLatestVersion(RepoInformation repoInfo, UserAgentInformation agentInfo)
         {
             var github = new GitHubClient(new ProductHeaderValue(agentInfo.Name, agentInfo.Version));
+            
             Release latest;
             try
             {
@@ -39,15 +40,12 @@ namespace TRVS.Core
             }
             catch (ApiException e)
             {
-                if (e.StatusCode == System.Net.HttpStatusCode.NotFound)
-                {
+                if (e.StatusCode == HttpStatusCode.NotFound)
                     return null;
-                }
-                else 
-                {
-                    throw e;
-                }
-            }            
+
+                throw;
+            }
+
             return latest.TagName[0] == 'v'
                 ? new Version(latest.TagName.Substring(1))
                 : new Version(latest.TagName);

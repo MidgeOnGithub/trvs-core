@@ -31,20 +31,20 @@ namespace TRVS.Core
             FileInfo[] files = dir.GetFiles();
 
             // Copy the files in the directory.
-            foreach (FileInfo file in files)
+            foreach (var file in files)
             {
                 string destPath = Path.Combine(destDir, file.Name);
                 file.CopyTo(destPath, overwrite: true);
             }
 
+            if (!recursive) 
+                return;
+
             // Recursively call this function to copy subdirectories.
-            if (recursive)
+            foreach (var subDir in subDirs)
             {
-                foreach (DirectoryInfo subDir in subDirs)
-                {
-                    string destPath = Path.Combine(destDir, subDir.Name);
-                    CopyDirectory(subDir.FullName, destPath, true);
-                }
+                string destPath = Path.Combine(destDir, subDir.Name);
+                CopyDirectory(subDir.FullName, destPath, true);
             }
         }
 
@@ -58,7 +58,7 @@ namespace TRVS.Core
         /// </returns>
         public static string ComputeMd5Hash(string file)
         {
-            FileStream fs = null;
+            FileStream? fs = null;
             try
             {
                 fs = new FileStream(file, FileMode.Open);
@@ -68,7 +68,7 @@ namespace TRVS.Core
             }
             catch (IOException e)
             {
-                if (e is DirectoryNotFoundException || e is FileNotFoundException)
+                if (e is DirectoryNotFoundException or FileNotFoundException)
                     throw new FileNotFoundException($"File \"{file}\" not found!", e);
             }
             finally
@@ -76,13 +76,14 @@ namespace TRVS.Core
                 fs?.Close();
             }
 
-            return null;
+            return string.Empty;
         }
 
         /// <summary>
         ///     Deletes <paramref name="dirs"/>.
         /// </summary>
         /// <param name="dirs">paths of directories to delete</param>
+        /// <param name="recursive">Whether or not to delete subdirectories</param>
         public static void DeleteDirectories(IEnumerable<string> dirs, bool recursive = false)
         {
             foreach (string dir in dirs)
@@ -93,7 +94,6 @@ namespace TRVS.Core
                 }
                 catch (DirectoryNotFoundException)
                 {
-                    continue;
                 }
 	        }
         }
@@ -105,9 +105,7 @@ namespace TRVS.Core
         public static void DeleteFiles(IEnumerable<string> files)
         {
             foreach (string file in files)
-            {
                 File.Delete(file);
-            }
         }
 
         /// <summary>
@@ -118,9 +116,7 @@ namespace TRVS.Core
         /// <returns>
         ///     The name of the first missing file or null if no files are missing
         /// </returns>
-        public static string FindMissingFile(IEnumerable<string> fileNames, string dir)
-        {
-            return fileNames.Select(file => Path.Combine(dir, file)).FirstOrDefault(path => !File.Exists(path));
-        }
+        public static string? FindMissingFile(IEnumerable<string> fileNames, string dir)
+            => fileNames.Select(file => Path.Combine(dir, file)).FirstOrDefault(path => !File.Exists(path));
     }
 }
