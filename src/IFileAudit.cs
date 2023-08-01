@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace TRVS.Core
+namespace TRVS.Core;
+
+/// <summary>
+///     Contains information about packaged files' names and MD5 hashes.
+/// </summary>
+public interface IFileAudit
 {
     /// <summary>
-    ///     Contains information about packaged files' names and MD5 hashes.
+    ///     The bare minimum files required for game/version recognition.
     /// </summary>
-    public interface IFileAudit
-    {
-        /// <summary>
-        ///     The bare minimum files required for game/version recognition.
-        /// </summary>
-        public IEnumerable<string> GameFiles { get; }
-    }
+    public IEnumerable<string> GameFiles { get; }
 }
